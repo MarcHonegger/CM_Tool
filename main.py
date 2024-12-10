@@ -44,7 +44,7 @@ class Player:
 
     def add_player_round(self, round_to_add: Round):
         self.participated_rounds.append(round_to_add)
-        self.participated_rounds = sorted(self.participated_rounds, key=lambda r: (r.place, r.points, r.mod_mean, r.solkoff, r.cumulative, r.cumulative_opposition))
+        self.participated_rounds = sorted(self.participated_rounds, key=lambda r: (r.place, r.points, r.mod_mean, r.solkoff, r.cumulative, r.cumulative_opposition))[:4]
 
     def get_participation_count(self):
         return len(self.participated_rounds)
@@ -60,7 +60,7 @@ class Player:
         self.total_cumulative_opposition = 0.0
 
         # Sum up values from up to 4 best game nights
-        for round_obj in self.participated_rounds[:4]:
+        for round_obj in self.participated_rounds:
             self.total_place += round_obj.place
             self.total_points += round_obj.points
             self.total_mod_mean += round_obj.mod_mean
@@ -89,14 +89,14 @@ def create_dictionary():
                     break
     return player
 
+print("Minimum Participation?")
+inp = int(input())
+
 player_dictionary = create_dictionary()
 players = sorted(players, key=lambda p: (p.get_participation_count(), -p.total_place), reverse=True)
 for p in players:
     print(p)
     print("\n")
-
-print("Minimum Participation")
-inp = int(input())
 
 players = [player for player in players if player.get_participation_count() >= inp]
 
